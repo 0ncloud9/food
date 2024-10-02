@@ -22,6 +22,8 @@
         body {
             background-color: white;
             color: black;
+            padding: 0;
+            margin: 0;
         }
 
         .header {
@@ -143,6 +145,7 @@
         }
 
         .card-button {
+            float: right;
             background-color: orange;
             color: white;
             text-align: center;
@@ -162,7 +165,7 @@
 
         #input-card {
             width: 500px;
-            margin: 0px 0px 0px 135px;
+            margin: 0px 0px 0px 80px;
             padding: 20px;
             background-color: #f9f9f9;
             border-radius: 10px;
@@ -220,6 +223,28 @@
             margin-left: 150px;
             font-size: 1500px;
         }
+
+        .t1 {
+            display: block;
+            font-weight: 700 !important;
+            font-size: calc(1.425rem + 2.1vw);
+            font-weight: 300;
+            line-height: 1.2;
+            margin-left: 88px;
+        }
+
+        .t2 {
+            margin-top: 0;
+            margin-bottom: 1rem;
+            font-family: 'Gowun Dodum', sans-serif;
+            box-sizing: border-box;
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 88px;
+            margin-inline-end: 0px;
+            unicode-bidi: isolate;
+        }
     </style>
 
     <script type="module">
@@ -257,7 +282,7 @@
 
             await addDoc(collection(db, "food"), doc);
             alert("음식이 추가 되었습니다!");
-            window.location.reload(); // Reload to update the card list
+            window.location.reload();
         });
 
         // Fetching and displaying food cards
@@ -271,7 +296,7 @@
             let comment = row.comment;
             let star = "⭐".repeat(row.star);
             let image = row.image;
-            let docId = doc.id; // Get document ID
+            let docId = doc.id;
 
             let temp_html = `
             <div class="col" data-id="${docId}">
@@ -289,16 +314,14 @@
             $(".row-cols-3").append(temp_html);
         }
 
-        // Proper event delegation to handle dynamically generated buttons
+        // Card delete button
         $(document).on("click", ".card-button", async function () {
-            let docId = $(this).data("id"); // Get the document ID from the button's data-id attribute
+            let docId = $(this).data("id");
             const cardElement = $(this).closest('.col');
 
             try {
-                // Delete the document from Firestore
                 await deleteDoc(doc(db, "food", docId));
 
-                // Remove the card from the DOM
                 cardElement.remove();
 
                 alert("카드가 삭제되었습니다!");
@@ -315,13 +338,42 @@
 <body>
     <header class="p-3 text-bg-dark">
         <!-- Navbar content -->
+<!-- Navbar -->
+    <header class="p-3 text-bg-dark">
+        <div class="container">
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                    <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
+                        <use xlink:href="#bootstrap"></use>
+                    </svg>
+                </a>
+                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                    <img src="https://s3.ap-northeast-2.amazonaws.com/materials.spartacodingclub.kr/food.png"
+                        class="icon"></li>
+                    <li><a href="#" class="nav-link px-2 text-danger">Foodcourt</a></li>
+                    <li><a href="#" class="nav-link px-2 ">홈</a></li>
+                    <li><a href="#" class="nav-link px-2 ">한식</a></li>
+                    <li><a href="#" class="nav-link px-2 ">일식</a></li>
+                    <li><a href="#" class="nav-link px-2 ">중식</a></li>
+                    <li><a href="#" class="nav-link px-2 ">양식</a></li>
+                </ul>
+                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+                    <input type="search" class="form-control form-control-dark text-bg-dark" placeholder="Search..."
+                        aria-label="Search">
+                </form>
+                <div class="text-end">
+                    <button type="button" class="btn btn-warning me-2">Login</button>
+                    <button type="button" class="btn btn-warning">Sign-up</button>
+                </div>
+            </div>
+        </div>
     </header>
 
     <div class="header">
         <div class="p-5 mb-4 bg-body-tertiary rounded-3">
             <div class="container-fluid py-5">
-                <h1 class="display-5 fw-bold">스파르타 푸드파이터</h1>
-                <p class="col-md-8 fs-4">본인만의 맛집을 소개하는 사이트입니다. 맛집을 소개해 주세요!</p>
+                <h1 class="t1">스파르타 푸드파이터</h1>
+                <p class="t2">본인만의 맛집을 소개하는 사이트입니다. 맛집을 소개해 주세요!</p>
 
                 <!-- Form for adding food items -->
                 <div class="post" id="input-card">
@@ -366,33 +418,8 @@
         <footer class="row row-cols-1 row-cols-sm-2 row-cols-md-5 py-5 my-5 border-top">
             <div class="col mb-3">
                 <a href="/" class="d-flex align-items-center mb-3 link-body-emphasis text-decoration-none"></a>
-                <p class="text-body-secondary">©Teamsparta 2024</p>
+                <p class="text-body-secondary"> ©Teamsparta 2024</p>
             </div>
-
-            <div class="col mb-3"></div>
-
-            <div class="col mb-3">
-                <h5>Section</h5>
-                <ul class="nav flex-column">
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Home</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Features</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Pricing</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">FAQs</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">About</a></li>
-                </ul>
-            </div>
-
-            <div class="col mb-3">
-                <h5>Section</h5>
-                <ul class="nav flex-column">
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Home</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Features</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Pricing</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">FAQs</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">About</a></li>
-                </ul>
-            </div>
-
             <div class="col mb-3">
                 <h5>Section</h5>
                 <ul class="nav flex-column">
